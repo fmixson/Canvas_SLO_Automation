@@ -33,21 +33,67 @@ soup = BeautifulSoup(page_source, 'lxml')
 tag = soup.body.h2
 dashboard = soup.find('div', {'class', 'ic-DashboardCard__box__container'})
 element2 = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.CLASS_NAME, 'screenreader-only')))
-term = dashboard.find_all('div', {'class', 'ic-DashboardCard__header-term ellipsis'})
-canvas_courses = []
-for dash in dashboard:
-    # print('DASH', dash)
-    print()
-    # term = dash.find('div', {'class', 'ic-DashboardCard__header-term ellipsis', 'title='''})
-    title = dash.find('div', {'class', 'ic-DashboardCard__header_content'})
-    title2 = title.find('h3', {'class', 'ic-DashboardCard__header-title ellipsis'})
-    title3 = title2.get_text(strip=True)
-    print('TITLE', title3)
-    if 'Equity' in title3:
-        courseLink = title3['href']
-        print(courseLink)
-        driver.get(courseLink)
-        courseLink.click()
+aTags = dashboard.find_all('a', {'class':'ic-DashboardCard__link'})
+SLO_Courses = []
+for atag in aTags:
+    # print('A Tag', atag)
+    term = atag.find('div',{'class':'ic-DashboardCard__header-term ellipsis'})
+    # print('TERM', term)
+# cards = dashboard.find_all('div', {'class', 'ic-DashboardCard'})
+# print('CARDS',cards)
+
+    termText = term.get_text(strip=True)
+    # print('TEXT', termText)
+
+    if '2016 Fall' in termText:
+        # print('2016 Fall Term', term)
+        SLO_Courses.append(atag)
+# print('SLO Courses', SLO_Courses)
+for course in SLO_Courses:
+    print('course', course)
+    # courseLink = title3['href']
+    # print(courseLink)
+    # driver.get(courseLink)
+    # courseLink.click()
+    courseLink = course['href']
+    fullCourseLink = 'https://cerritos.instructure.com' + courseLink +'/grades'
+    print('Full Course Link', fullCourseLink)
+    activeLink = driver.get(fullCourseLink)
+    # gradeLink = fullCourseLink + '/grades'
+    # activeGradeLiink = driver.get(gradeLink)
+    downloadGrades = driver.find_element(By.ID,'gradebook-toolbar')
+    print('Grade Sheet', downloadGrades)
+
+
+
+
+
+
+
+
+
+
+
+
+# canvas_courses = []
+# for dash in dashboard:
+#     # print('DASH', dash)
+#     # print()
+#     # term = dash.find('div', {'class', 'ic-DashboardCard__header-term ellipsis', 'title='''})
+#     title = dash.find('div', {'class', 'ic-DashboardCard__header_content'})
+#     title2 = title.find('h3', {'class', 'ic-DashboardCard__header-title ellipsis'})
+#     title3 = title2.get_text(strip=True)
+#     # print('title', title)
+    # print()
+    # print('title2', title2)
+    # print()
+    # print('TITLE', title3)
+    # if 'Equity' in title3:
+    #     print('Equity', title3)
+        # courseLink = title3['href']
+        # print(courseLink)
+        # driver.get(courseLink)
+        # courseLink.click()
     # courseLink = dash.find('a', {'class', 'ic-DashboardCard__link external'})
     #
     # # courseLink2 = driver.find_element(By.LINK_TEXT('href'))
@@ -62,6 +108,7 @@ for dash in dashboard:
     # if 'Equity' in title3:
     #     # print('in term')
     #     courseLink = dash.find('a', {'class', 'ic-DashboardCard__link'})
+    #     print('Course Link', courseLink)
     #     canvas_courses.append(courseLink)
     #     print('CANVAS COURSES', canvas_courses)
     #     print()
