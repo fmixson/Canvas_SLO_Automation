@@ -10,15 +10,33 @@ from bs4 import BeautifulSoup
 import lxml
 import requests
 
-class CanvasCourse:
+class GradesHTML:
 
-    def __init__(self, courseLink, courseName):
-        self.courseLink = courseLink
-        self.courseName = courseName
+    def __init__(self, gradesLink):
+        self.gradesLink = gradesLink
 
-    def OpenCanvasCourse(self):
-        print(self.courseName)
+    def GradesSourcePage(self):
+        driver.get(self.gradesLink)
+        buttons = driver.find_elements(By.ID,'keyboard-shortcuts')
+        buttons.click()
 
+        # pageLoading = WebDriverWait(driver, 10).until(EC.presence_of_element_located(By.ID, "dialogue_for_help_0"))
+        pageLoading = element = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.CLASS_NAME, 'screenreader-only')))
+        # exportButton = driver.find_element(By.XPATH, '//*[@id="uCy2yKCKDDTu"]').click()
+        # exportButton2 = driver.find_element(By.XPATH,'//*[@id="upTKLyjbbGUZ"]')
+        # print('Export Button', exportButton2)
+
+
+        # page_source = driver.page_source
+        # exportButton = driver.find_element(By.XPATH, '/html/body/span/span/span/span[2]/ul/li[2]').click()
+        # gradesSoup = BeautifulSoup(page_source,'lxml')
+        # span = gradesSoup.find_all('button')
+
+        # < span
+        #
+        # class ="sJGfW_blJt" id="umT6Hyuf2fZG" > < span data-menu-id="export-all" > Export Entire Gradebook < / span > < / span >
+        print('Gradebook Actions Button',buttons)
+        print()
 
 
 
@@ -47,22 +65,29 @@ for atag in aTags:
 
     if '2016 Fall' in termText:
         # print('2016 Fall Term', term)
-        SLO_Courses.append(atag)
+
 # print('SLO Courses', SLO_Courses)
-for course in SLO_Courses:
-    print('course', course)
+# for course in SLO_Courses:
+#     print('course', course)
     # courseLink = title3['href']
     # print(courseLink)
     # driver.get(courseLink)
     # courseLink.click()
-    courseLink = course['href']
-    fullCourseLink = 'https://cerritos.instructure.com' + courseLink +'/grades'
-    print('Full Course Link', fullCourseLink)
-    activeLink = driver.get(fullCourseLink)
+        courseLink = atag['href']
+        fullCourseLink = 'https://cerritos.instructure.com' + courseLink +'/grades'
+        SLO_Courses.append(fullCourseLink)
+        print('SLO Courses', SLO_Courses)
+
+for link in SLO_Courses:
+    grades = GradesHTML(gradesLink=link)
+    grades.GradesSourcePage()
+
+    # print('Full Course Link', fullCourseLink)
+    # activeLink = driver.get(fullCourseLink)
     # gradeLink = fullCourseLink + '/grades'
     # activeGradeLiink = driver.get(gradeLink)
-    downloadGrades = driver.find_element(By.ID,'gradebook-toolbar')
-    print('Grade Sheet', downloadGrades)
+    # downloadGrades = driver.find_element(By.ID,'gradebook-toolbar')
+    # print('Grade Sheet', downloadGrades)
 
 
 
