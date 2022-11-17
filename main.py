@@ -17,8 +17,9 @@ class GradesHTML:
 
     def GradesSourcePage(self):
         driver.get(self.gradesLink)
-        buttons = driver.find_elements(By.ID,'keyboard-shortcuts')
-        buttons.click()
+        downArrow = driver.find_element(By.XPATH,'//*[@id="uk27gzZUsVm7"]/span/span/span[2]/span/span/svg').click()
+
+
 
         # pageLoading = WebDriverWait(driver, 10).until(EC.presence_of_element_located(By.ID, "dialogue_for_help_0"))
         pageLoading = element = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.CLASS_NAME, 'screenreader-only')))
@@ -35,7 +36,7 @@ class GradesHTML:
         # < span
         #
         # class ="sJGfW_blJt" id="umT6Hyuf2fZG" > < span data-menu-id="export-all" > Export Entire Gradebook < / span > < / span >
-        print('Gradebook Actions Button',buttons)
+        # print('Gradebook Actions Button',buttons)
         print()
 
 
